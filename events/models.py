@@ -2,16 +2,24 @@ from django.db import models
 
 # Create your models here.
 class Category(models.Model):
+    """Represents a category related to an event."""
     # Categories can't have the same name.
     name = models.CharField(max_length=255, unique=True)
     
     def __str__(self):
+        """String representation for the Category model."""
         return self.name
     
+    class Meta:
+        verbose_name_plural = "Categories"
+    
 class Tag(models.Model):
+    """Represents tags related to an event."""
+    # Tags can't have the same name.
     name = models.CharField(max_length=255, unique=True)
     
     def __str__(self):
+        """String representation for the Tag model."""
         return self.name
 
 class Event(models.Model):
