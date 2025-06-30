@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}EMS | List of events{% endblock title %}
+
+{% block content %}
+    <div class="events-container">
+        {% for event in events %}
+            <div class="event-item" style="border: solid 1px black; margin: 8px 0; padding: 8px;">
+                <h2>
+                    <a href="{% url 'events:event_detail' event.id %}">{{ event.title }}</a>
+                    {% if event.is_featured %}
+                    <span class="badge text-bg-primary">Featured</span> {# Example: Use a Bootstrap badge #}
+                    {% endif %}
+                </h2>
+                <!-- <h2><a href="{ url 'events:event_detail' slug=event.slug }">{{ event.title }}</a></h2> -->
+                <p>Description: {{ event.description|truncatewords:30 }}</p>
+                <p>Location: {{ event.location }}</p>
+                <p>Date & Time:
+                    From {{ event.start_datetime|date }} at {{ event.start_datetime|time }}
+                    {% if event.end_datetime %}
+                        to {{ event.end_datetime|date }} at {{ event.end_datetime|time }}
+                    {% endif %}
+                </p>
+                <p>Price:
+                    {% if not event.price %}
+                        Free
+                    {% else %}
+                        {{ event.get_currency_display }}{{ event.price }}
+                    {% endif %}
+                </p>
+                <p>Capacity: {% if not event.capacity %}
+                        Unlimited
+                    {% else %}
+                        {{ event.capacity }}
+                    {% endif %}
+                </p>
+                <p>Category: {{ event.category }}</p>
+                {% if event.tags.all %}
+                    <p>Tags:
+                        {% for tag in event.tags.all %}
+                            <span class="badge text-bg-info">#{{ tag.name }}</span>
+                        {% endfor %}
+                    </p>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

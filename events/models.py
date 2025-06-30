@@ -52,8 +52,8 @@ class Event(models.Model):
     # slug = models.SlugField(unique=True, max_length=255, blank=True)
 
     # Date & Time
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_datetime = models.DateTimeField()
+    end_datetime = models.DateTimeField(null=True, blank=True) # Optional
 
     # Pricing & Capacity
     # Price example: 19.50
@@ -81,4 +81,4 @@ class Event(models.Model):
     
     class Meta:
         # Newly created events come first
-        ordering = ["-created_at", "start_time"]
+        ordering = ["-created_at", "start_datetime"]

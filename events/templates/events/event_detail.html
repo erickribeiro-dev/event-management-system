@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}EMS | Details of event {{ event.title }}{% endblock title %}
+
+{% block content %}
+    <div class="event-item" style="border: solid 1px black; margin: 8px 0; padding: 8px;">
+        <h2>
+            <a href="{% url 'events:event_detail' event.id %}">{{ event.title }}</a>
+            {% if event.is_featured %}
+            <span class="badge text-bg-primary">Featured</span> {# Example: Use a Bootstrap badge #}
+            {% endif %}
+        </h2>
+        <!-- <h2><a href="{ url 'events:event_detail' slug=event.slug }">{{ event.title }}</a></h2> -->
+        <p>Description: {{ event.description|linebreaks }}</p>
+        <p>Location: {{ event.location }}</p>
+        <p>Date & Time:
+            From {{ event.start_datetime|date }} ({{ event.start_datetime|time }})
+            {% if event.end_datetime %}
+                to {{ event.end_datetime|date }} ({{ event.end_datetime|time }})
+            {% endif %}
+        </p>
+        <p>Price:
+            {% if not event.price %}
+                Free
+            {% else %}
+                {{ event.get_currency_display }}{{ event.price }}
+            {% endif %}
+        </p>
+        <p>Capacity: {% if not event.capacity %}
+                Unlimited
+            {% else %}
+                {{ event.capacity }}
+            {% endif %}
+        </p>
+        <p>Category: {{ event.category }}</p>
+        <p>Tags:
+
+        </p>
+        <p>Featured: {{ event.is_featured }}</p>
+    </div>
+{% endblock content %}

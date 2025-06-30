@@ -1,12 +1,15 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Event Management System{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+    <!-- Custom css go here: -->
     <style>
         :root {
-            color-scheme: dark light;
+            color-scheme: dark light !important;
         }
     </style>
 </head>
@@ -14,7 +17,9 @@
     <header>
         <nav>
             <div>
-                <a href="{% url 'events:index' %}"><h1>EMS</h1></a>
+                <a href="{% url 'events:index' %}"><h2>EMS</h2></a>
+                <a href="{% url 'events:index' %}">Home</a> |
+                <a href="{% url 'events:event_list' %}">Events</a>
             </div>
         </nav>
     </header>
@@ -24,5 +29,7 @@
     <footer>
         <p>&copy; {% now "Y" %} Event Management System. All Rights Reserved.</p>
     </footer>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}" defer></script>
+    <!-- Custom scripts go here: -->
 </body>
 </html>
