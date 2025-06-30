@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.utils import timezone
 from django.views import generic
 from .models import Event
 
@@ -14,9 +15,12 @@ class EventListView(generic.ListView):
     context_object_name = "events"
 
     def get_queryset(self):
+        # Only query events that have been published and whose start_datetime is in the future.
         # Only list published events, prefetching related tags for performance (Avoid N + 1 problem).
-        # return Event.objects.filter(status="PUB").prefetch_related("tags")
-        return Event.objects.all().prefetch_related("tags")
+        return Event.objects.filter(
+            status="PUB",
+            start_datetime__gte=timezone.now()
+        ).prefetch_related("tags")
 
 class EventDetailView(generic.DetailView):
     """A view representing details of a specific event."""
@@ -25,5 +29,9 @@ class EventDetailView(generic.DetailView):
     context_object_name = "event"
 
     def get_queryset(self):
+        # Only display published events and events whose start_datetime is in the future.
         # prefetch_related is not needed when displaying a single object.
-        return Event.objects.filter(status="PUB")
+        return Event.objects.filter(
+            status="PUB",
+            start_datetime__gte=timezone.now()
+        )

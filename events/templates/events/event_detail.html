@@ -3,39 +3,49 @@
 {% block title %}EMS | Details of event {{ event.title }}{% endblock title %}
 
 {% block content %}
-    <div class="event-item" style="border: solid 1px black; margin: 8px 0; padding: 8px;">
-        <h2>
-            <a href="{% url 'events:event_detail' event.id %}">{{ event.title }}</a>
-            {% if event.is_featured %}
-            <span class="badge text-bg-primary">Featured</span> {# Example: Use a Bootstrap badge #}
-            {% endif %}
-        </h2>
-        <!-- <h2><a href="{ url 'events:event_detail' slug=event.slug }">{{ event.title }}</a></h2> -->
-        <p>Description: {{ event.description|linebreaks }}</p>
-        <p>Location: {{ event.location }}</p>
-        <p>Date & Time:
-            From {{ event.start_datetime|date }} ({{ event.start_datetime|time }})
-            {% if event.end_datetime %}
-                to {{ event.end_datetime|date }} ({{ event.end_datetime|time }})
-            {% endif %}
-        </p>
-        <p>Price:
-            {% if not event.price %}
-                Free
-            {% else %}
-                {{ event.get_currency_display }}{{ event.price }}
-            {% endif %}
-        </p>
-        <p>Capacity: {% if not event.capacity %}
-                Unlimited
-            {% else %}
-                {{ event.capacity }}
-            {% endif %}
-        </p>
-        <p>Category: {{ event.category }}</p>
-        <p>Tags:
-
-        </p>
-        <p>Featured: {{ event.is_featured }}</p>
+    <div class="row g-3 justify-content-center">
+        <div class="col-12 d-flex">
+            <div class="card w-100 shadow-sm shadow-lg-hover">
+                <h5 class="card-header">
+                    {{ event.title }}
+                    {% if event.is_featured %}
+                        <span class="badge text-bg-primary">Featured</span>
+                    {% endif %}
+                    <!-- <h5><a href="{ url 'events:event_detail' slug=event.slug }">{{ event.title }}</a></h5> -->
+                </h5>
+                <div class="card-body">
+                    <p class="card-text"><span class="text-body-secondary">Description:</span> {{ event.description|linebreaksbr }}</p>
+                    <p class="card-text"><span class="text-body-secondary">Location:</span> {{ event.location }}</p>
+                    <p class="card-text"><span class="text-body-secondary">Date & Time:</span>
+                        From {{ event.start_datetime|date }} at {{ event.start_datetime|time }}
+                        {% if event.end_datetime %}
+                            to {{ event.end_datetime|date }} at {{ event.end_datetime|time }}
+                        {% endif %}
+                    </p>
+                    <p class="card-text"><span class="text-body-secondary">Price:</span>
+                        {% if not event.price %}
+                            Free
+                        {% else %}
+                            {{ event.get_currency_display }}{{ event.price }}
+                        {% endif %}
+                    </p>
+                    <p class="card-text"><span class="text-body-secondary">Capacity:</span>
+                        {% if not event.capacity %}
+                            Unlimited
+                        {% else %}
+                            {{ event.capacity }} / {{ event.capacity }}
+                        {% endif %}
+                    </p>
+                    <p class="card-text"><span class="text-body-secondary">Category:</span> {{ event.category }}</p>
+                    {% if event.tags.all %}
+                        <p class="card-text"><span class="text-body-secondary">Tags:</span>
+                            {% for tag in event.tags.all %}
+                                <span class="badge text-bg-light">#{{ tag.name }}</span>
+                            {% endfor %}
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock content %}

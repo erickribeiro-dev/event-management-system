@@ -81,4 +81,4 @@ class Event(models.Model):
     
     class Meta:
         # Newly created events come first
-        ordering = ["-created_at", "start_datetime"]
+        ordering = ["-is_featured","-created_at", "start_datetime"]

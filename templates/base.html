@@ -7,27 +7,37 @@
     <title>{% block title %}Event Management System{% endblock title %}</title>
     <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
     <!-- Custom css go here: -->
-    <style>
-        :root {
-            color-scheme: dark light !important;
-        }
-    </style>
 </head>
 <body>
-    <header>
-        <nav>
-            <div>
-                <a href="{% url 'events:index' %}"><h2>EMS</h2></a>
-                <a href="{% url 'events:index' %}">Home</a> |
-                <a href="{% url 'events:event_list' %}">Events</a>
+    <header class="text-bg-light container-fluid">
+        <nav class="navbar navbar-expand-sm" data-bs-theme="light">
+            <a class="navbar-brand" href="{% url 'events:index' %}">
+                <!-- <img class="d-inline-block align-text-top" src="" alt="Logo" width="64" height="64"> -->
+                 <h1>EMS</h1>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'events:index' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'events:event_list' %}">Events</a></li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-link active" href="{% url 'admin:index' %}">Admin Dashboard</a></li>
+                    {% endif %}
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </form>
             </div>
         </nav>
     </header>
-    <main>
+    <main class="container-fluid my-3">
         {% block content %}{% endblock content %}
     </main>
-    <footer>
-        <p>&copy; {% now "Y" %} Event Management System. All Rights Reserved.</p>
+    <footer class="container-fluid text-bg-light py-3">
+        <p class="mb-0">&copy; {% now "Y" %} Event Management System. All Rights Reserved.</p>
     </footer>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}" defer></script>
     <!-- Custom scripts go here: -->
