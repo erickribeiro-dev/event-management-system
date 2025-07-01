@@ -3,7 +3,8 @@ from .models import Category, Tag, Event
 
 # Register your models here.
 class EventAdmin(admin.ModelAdmin):
-    list_display = ("title", "start_datetime",)
+    list_display = ("title", "created_at", "updated_at", "is_past", "is_ongoing", "is_upcoming")
+    list_filter = ("category", "tags", "status")
     prepopulated_fields = {"slug": ("title",)}
 
 admin.site.register(Category)
