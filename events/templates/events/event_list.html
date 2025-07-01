@@ -8,19 +8,22 @@
             <div class="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex">
                 <div class="card w-100">
                     <h5 class="card-header">
-                        <a href="{% url 'events:event_detail' event.id %}" class="text-decoration-none">{{ event.title }}</a>
+                        <a href="{% url 'events:event_detail' event.slug %}" class="text-decoration-none">{{ event.title }}</a>
                         {% if event.is_featured %}
-                            <span class="badge text-bg-primary">Featured</span>
+                        {% if event.featured_text %}
+                            <span class="badge bg-primary">{{ event.featured_text }}</span>
+                        {% else %}
+                            <span class="badge bg-primary">Featured</span>
                         {% endif %}
-                        <!-- <h5><a href="{ url 'events:event_detail' slug=event.slug }">{{ event.title }}</a></h5> -->
+                    {% endif %}
                     </h5>
                     <div class="card-body">
-                        <p class="card-text"><span class="text-body-secondary">Description:</span> {{ event.description|truncatewords:30 }} <a href="{% url 'events:event_detail' event.id %}">Read more</a></p>
+                        <p class="card-text"><span class="text-body-secondary">Description:</span> {{ event.description|truncatewords:30 }} <a href="{% url 'events:event_detail' event.slug %}">Read more</a></p>
                         <p class="card-text"><span class="text-body-secondary">Location:</span> {{ event.location }}</p>
                         <p class="card-text"><span class="text-body-secondary">Date & Time:</span>
-                            From {{ event.start_datetime|date }} at {{ event.start_datetime|time }}
+                            {{ event.start_datetime|date }}, {{ event.start_datetime|time }}
                             {% if event.end_datetime %}
-                                to {{ event.end_datetime|date }} at {{ event.end_datetime|time }}
+                                to {{ event.end_datetime|date }}, {{ event.end_datetime|time }}
                             {% endif %}
                         </p>
                         <p class="card-text"><span class="text-body-secondary">Price:</span>
@@ -36,11 +39,22 @@
                                 {{ event.capacity }} / {{ event.capacity }}
                             {% endif %}
                         </p>
-                        <p class="card-text"><span class="text-body-secondary">Category:</span> {{ event.category }}</p>
+                        <p class="card-text"><span class="text-body-secondary">Category:</span>
+                            <a href="#" class="badge text-bg-light border text-decoration-none">{{ event.category }}</a>
+                            <!-- TODO: add slug to tags and categories
+                            <a href="{% url 'events:event_list' %}?category={{ event.category.slug|default:'' }}" class="btn btn-sm btn-primary">
+                                {{ event.category.name|default:'Uncategorized' }}
+                            </a> -->
+                            
+                        </p>
                         {% if event.tags.all %}
                             <p class="card-text"><span class="text-body-secondary">Tags:</span>
                                 {% for tag in event.tags.all %}
-                                    <a href="#"><span class="badge text-bg-light border">#{{ tag.name }}</span></a>
+                                    <a href="#" class="badge text-bg-light border text-decoration-none rounded-pill">#{{ tag.name }}</a>
+                                    <!-- TODO: add slug to tags and categories
+                                    <a href="{ url 'events:event_list' }?tag={{ tag.slug|default:'' }}" class="badge text-bg-info rounded-pill text-decoration-none me-1">
+                                        #{{ tag.name }}
+                                    </a> -->
                                 {% endfor %}
                             </p>
                         {% endif %}
