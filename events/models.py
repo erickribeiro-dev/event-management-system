@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 # Create your models here.
 class Category(models.Model):
@@ -49,7 +50,7 @@ class Event(models.Model):
     # Will be uploaded to MEDIA_ROOT + path
     # image = models.ImageField(upload_to="events/", blank=True, null=True)
     # Will be automatically generated. blank=True makes the field optional in forms.
-    # slug = models.SlugField(unique=True, max_length=255, blank=True)
+    slug = models.SlugField(unique=True, max_length=255, blank=True, null=False)
 
     # Date & Time
     start_datetime = models.DateTimeField()
@@ -67,6 +68,13 @@ class Event(models.Model):
     tags = models.ManyToManyField(Tag, blank=True)
     status = models.CharField(max_length=3, choices=STATUS_CHOICES, default="DRA")
     is_featured = models.BooleanField(default=False, help_text="Feature this event on the homepage.")
+    featured_text = models.CharField(
+        max_length=20,
+        blank=True,    # Allow it to be empty in forms
+        null=True,     # Allow it to be NULL in the database
+        help_text="Custom text to display on the featured badge ('Hot!', 'New!', 'Limited Spots!'). Only visible if Is featured is checked."
+    )
+
 
     # TODO: implement Organizer
     # organizer = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -78,6 +86,23 @@ class Event(models.Model):
     def __str__(self):
         """String representation for the Event model."""
         return self.title
+    
+    def save(self, *args, **kwargs):
+        """Override the save method to generate a slug automatically based on event.title.
+        Slugs with the same title will have a number appended to differentiate them.
+        """
+        if not self.slug:
+            base_slug = slugify(self.title)
+            unique_slug = base_slug
+            num = 1
+            # Append a number if the slug is not unique
+            while Event.objects.filter(slug=unique_slug).exists():
+                unique_slug = f"{base_slug}-{num}"
+                num += 1
+                
+            self.slug = unique_slug
+        super().save(*args, **kwargs)
+
     
     class Meta:
         # Newly created events come first
