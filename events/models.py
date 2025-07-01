@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
@@ -76,7 +77,6 @@ class Event(models.Model):
         help_text="Custom text to display on the featured badge ('Hot!', 'New!', 'Limited Spots!'). Only visible if Is featured is checked."
     )
 
-
     # TODO: implement Organizer
     # organizer = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -104,25 +104,32 @@ class Event(models.Model):
             self.slug = unique_slug
         super().save(*args, **kwargs)
 
-    def is_past(self, obj):
+    @admin.display(boolean=True, description="Ended")
+    def is_past(self):
         """Check if an event is in the past."""
         now = timezone.now()
-        if obj.start_datetime and obj.end_datetime:
-            return obj.end_datetime < now
+        # If the event has an end_datetime, return True if we're past the end time.
+        if self.end_datetime:
+            return self.end_datetime < now
+        # Otherwise, return True if we're past the start_datetime.
+        return self.start_datetime < now
         
-    def is_ongoing(self, obj):
+    @admin.display(boolean=True, description="Ongoing")
+    def is_ongoing(self):
         """Check if an event is ongoing."""
         now = timezone.now()
-        if obj.start_datetime and obj.end_datetime:
-            return obj.start_datetime < now < obj.end_datetime
-
-    def is_upcoming(self, obj):
+        # An event is ongoing if it has an end_datetime and if we're between its start and end datetimes.
+        if self.end_datetime:
+            return self.start_datetime <= now < self.end_datetime
+        return False
+    
+    @admin.display(boolean=True, description="Upcoming")
+    def is_upcoming(self):
         """Check if an event is upcoming."""
         now = timezone.now()
+        # An event is upcoming if its start_datetime is in the future.
         return self.start_datetime > now
 
-
-    
     class Meta:
-        # Newly created events come first
-        ordering = ["-is_featured","-created_at", "start_datetime"]
+        # Newly created events come first.
+        ordering = ["-is_featured", "-created_at", "start_datetime"]
