@@ -57,11 +57,11 @@ print(get_random_secret_key())
 ```
 
 6. Set up SECRET_KEY environment variable:
--On Windows, open "View advanced system settings (Control Panel)"
--In the "System Properties'" Advanced tab, click "Environment Variables..."
--Under System variables click "New...", and enter the values, then press OK:
-Variable name: EMS_SECRET_KEY
-Variable value: \<your secret key\>
+On Windows, open "View advanced system settings (Control Panel)"
+In the "System Properties'" Advanced tab, click "Environment Variables..."
+Under System variables click "New...", and enter the values, then press OK:
+> Variable name: EMS_SECRET_KEY
+> Variable value: \<your secret key\>
 
 7. Create a superuser:
 ```bash
