@@ -70,11 +70,11 @@ python manage.py createsuperuser
 
 8. Create a static folder and download bootstrap 5.3.7:
 ```bash
-mkdir static\\vendor\\bootstrap
+mkdir static\vendor\bootstrap
 ```
--Download bootstrap [here](https://getbootstrap.com/docs/5.3/getting-started/download/)
--Extract the .zip file
--Move the entire css/ and js/ folders to the "static/vendor/bootstrap" directory created
+Download bootstrap [here](https://getbootstrap.com/docs/5.3/getting-started/download/)
+Extract the .zip file
+Move the entire css/ and js/ folders to the "static/vendor/bootstrap" directory created
 
 9. Run the development server:
 ```bash
@@ -82,5 +82,5 @@ python manage.py runserver
 ```
 
 10. To access the Django admin dashboard:
--Go to 127.0.0.1:8000/admin
--Enter the superuser credentials you created on step 7
+Go to 127.0.0.1:8000/admin
+Enter the superuser credentials you created on step 7
