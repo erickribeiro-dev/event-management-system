@@ -1,11 +1,12 @@
 # event-management-system
 A Django system for creating and managing events.
+
 > ⚠️ **This project is currently in development.** Features may change, and full functionality is not yet ready.
 
 ## Table of Contents
 - [Features](#features)
 - [Technologies used](#technologies-used)
-- [Setup Instructions (Windows)](#setup-instructions-windows)
+- [Setup instructions (Windows)](#setup-instructions-windows)
 
 ## Features
 - Event management: Create and manage Events with categories, images, tags, location, featured badges, price, and more.
