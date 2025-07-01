@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.utils.text import slugify
 
 # Create your models here.
@@ -102,6 +103,24 @@ class Event(models.Model):
                 
             self.slug = unique_slug
         super().save(*args, **kwargs)
+
+    def is_past(self, obj):
+        """Check if an event is in the past."""
+        now = timezone.now()
+        if obj.start_datetime and obj.end_datetime:
+            return obj.end_datetime < now
+        
+    def is_ongoing(self, obj):
+        """Check if an event is ongoing."""
+        now = timezone.now()
+        if obj.start_datetime and obj.end_datetime:
+            return obj.start_datetime < now < obj.end_datetime
+
+    def is_upcoming(self, obj):
+        """Check if an event is upcoming."""
+        now = timezone.now()
+        return self.start_datetime > now
+
 
     
     class Meta:
