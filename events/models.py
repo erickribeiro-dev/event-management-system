@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import admin
 from django.db import models
 from django.utils import timezone
@@ -52,7 +53,7 @@ class Event(models.Model):
     # Will be uploaded to MEDIA_ROOT + path
     # image = models.ImageField(upload_to="events/", blank=True, null=True)
     # Will be automatically generated. blank=True makes the field optional in forms.
-    slug = models.SlugField(unique=True, max_length=255, blank=True, null=False)
+    slug = models.SlugField(unique=True, max_length=255, blank=True)
 
     # Date & Time
     start_datetime = models.DateTimeField()
@@ -77,8 +78,8 @@ class Event(models.Model):
         help_text="Custom text to display on the featured badge ('Hot!', 'New!', 'Limited Spots!'). Only visible if Is featured is checked."
     )
 
-    # TODO: implement Organizer
-    # organizer = models.ForeignKey(User, on_delete=models.CASCADE)
+    # Good practice to use related_name. Example usage: user_instance.events_organized.all()
+    organizer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='events_organized')
 
     # Auditing fields
     created_at = models.DateTimeField(auto_now_add=True)
