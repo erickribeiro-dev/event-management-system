@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}EMS | Accounts{% endblock title %}
+
+{% block content %}
+    <div>
+        <p>This is the accounts page.</p>
+        {% if user.is_authenticated %}
+            <p>Hello, {{ user.username }}!</p>
+        {% endif %}
+    </div>
+{% endblock content %}
