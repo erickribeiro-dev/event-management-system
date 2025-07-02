@@ -1,5 +1,7 @@
+from decimal import Decimal
 from django.conf import settings
 from django.contrib import admin
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
@@ -60,10 +62,9 @@ class Event(models.Model):
     end_datetime = models.DateTimeField(null=True, blank=True) # Optional
 
     # Pricing & Capacity
-    # Price example: 19.50
-    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default="BRL")
-    capacity = models.PositiveIntegerField(null=True, blank=True, help_text="Leave empty for unlimited.")
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, validators=[MinValueValidator(Decimal("0.00"))])
+    capacity = models.PositiveIntegerField(null=True, blank=True, default=0, help_text="Leave empty for unlimited.", validators=[MinValueValidator(0)])
 
     # Category, Tags, Status & Featured
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
