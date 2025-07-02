@@ -16,7 +16,7 @@ A Django system for creating and managing events.
 
 ## Technologies used
 - Python 3.13.5
-- Django 5.2.3
+- Django 5.2.4
 - Bootstrap 5.3.7
 - SQLite (temporary, will use PostgreSQL later)
 
