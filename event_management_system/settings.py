@@ -131,3 +131,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # TODO: implement Uploaded media files
 # MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # MEDIA_URL = "/media/"
+
+# Users, Accounts and Auth
+AUTH_USER_MODEL = "accounts.User"
