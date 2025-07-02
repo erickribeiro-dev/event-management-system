@@ -22,20 +22,22 @@
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'events:index' %}">Home</a></li>
                     <li class="nav-item"><a class="nav-link {% if request.path == '/events/' %}active{% endif %}" href="{% url 'events:event_list' %}">Events</a></li>
+                    
                     <li class="nav-item"><a class="nav-link {% if request.path == '/accounts/' %}active{% endif %}" href="{% url 'accounts:index' %}">Accounts</a></li>
-                    {% if user.is_authenticated %}
+
+                    {% if user.is_authenticated and user.is_staff %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}" target="_blank">Admin Dashboard &UpperRightArrow;</a></li>
                     {% endif %}
                 </ul>
                 {% if user.is_authenticated %}
-                    <span class="me-1">Welcome, {{user.username}}! </span> <a href="#" class="me-auto text-decoration-none">Log out</a>
+                    <span class="ms-auto">Welcome, {{user.username}}!</span><a href="#" class="ms-1 text-decoration-none">Log out</a>
                 {% else %}
-                    <a href="#" class="me-auto text-decoration-none">Log in</a>
+                    <a href="#" class="ms-auto text-decoration-none">Log in</a>
                 {% endif %}
-                <form class="d-flex" role="search">
+                <!--form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
                     <button class="btn btn-outline-primary" type="submit">Search</button>
-                </form>
+                </form-->
             </div>
         </nav>
     </header>
