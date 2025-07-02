@@ -1,0 +1,27 @@
+{% extends  "base.html" %}
+
+{% block title %}EMS | Create a new event (POST) | Edit an event (GET){% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card">
+                <div class="card-header text-bg-primary">
+                    <h2 class="m-0">
+                        {% if form.instance.pk %}Edit event{% else %}Create new event{% endif %}
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" class="btn btn-success" value="{% if form.instance.pk %}Update event{% else %}Create event{% endif %}">
+                        <a href="{% url 'events:index' %}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
