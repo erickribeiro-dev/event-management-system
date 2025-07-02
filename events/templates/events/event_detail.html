@@ -3,10 +3,11 @@
 {% block title %}EMS | Details of event {{ event.title }}{% endblock title %}
 
 {% block content %}
+    <!-- Row 1 -->
     <div class="row g-3 justify-content-center">
         <div class="col-12 d-flex">
             <div class="card w-100">
-                <h5 class="card-header">
+                <h5 class="card-header text-bg-light">
                     {{ event.title }}
                     {% if event.is_featured %}
                         {% if event.featured_text %}
@@ -66,12 +67,16 @@
             </div>
         </div>
     </div>
-    {% if request.META.HTTP_REFERER %}
-        <a class="text-decoration-none" href="{{ request.META.HTTP_REFERER }}
-        ">&larrhk; Back</a>
-    {% endif %}
-    <!--
-        TODO: Add more sections with bigger text:
+    <!-- Row 2 -->
+    <div class="row justify-content-start mt-3">
+        <div class="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex">
+            {% if request.META.HTTP_REFERER %}
+                <a class="text-decoration-none" href="{{ request.META.HTTP_REFERER }}
+                ">&larrhk; Back</a>
+            {% endif %}
+        </div>
+    </div>
+    <!-- TODO: Add more sections with bigger text:
         -banner
         -date & time
         -title
@@ -84,6 +89,5 @@
         -button to report
         -more events from this organizer
         -other events
-        -
      -->
 {% endblock content %}
