@@ -1,11 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.http import HttpResponseForbidden
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views import generic
 from .forms import EventForm
 from .models import Event
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.edit import CreateView, UpdateView
+# from django.contrib.auth.mixins import LoginRequiredMixin # For CBV
+# from django.views.generic.edit import CreateView, UpdateView # For Extending in CBV
 
 # Create your views here.
 def index(request):
@@ -64,11 +65,43 @@ def create_event(request):
     # If the user requests the event creation form (GET), display the empty form.
     else:
         form = EventForm()
+        
     context = {"form": form}
     return render(request, "events/event_form.html", context)
 
 # class EventUpdateView(LoginRequiredMixin, UpdateView):
 #     pass
 
-# def update_event(request):
-#     pass
+@login_required
+def update_event(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    # Only the user who created the event can update it.
+    if request.user != event.organizer:
+        return HttpResponseForbidden("Only this event's organizer can update this event.")
+    # If the user submits the event update form (POST), process it and save to the database.
+    if request.method == "POST":
+        # form contains the data submitted by the user.
+        form = EventForm(request.POST, instance=event)
+        if form.is_valid():
+            form.save()
+            return redirect("events:event_detail", slug=event.slug)
+    # Otherwise, display the form to update the values of the this event.
+    else:
+        form = EventForm(instance=event)
+
+    context = {"form": form, "event": event}
+    return render(request, "events/event_form.html", context)
+
+@login_required
+def delete_event(request, pk):
+    event = get_object_or_404(Event, pk=pk)
+    if request.user != event.organizer:
+        return HttpResponseForbidden("Only this event's organizer can delete this event.")
+    # Delete event if the request is POST.
+    if request.method == "POST":
+        event.delete()
+        return redirect("events:event_list")
+    
+    # Otherwise, display a confirmation before deleting.
+    context = {"event": event}
+    return render(request, "events/event_delete.html", context)
