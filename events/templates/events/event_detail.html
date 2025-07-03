@@ -3,57 +3,69 @@
 {% block title %}EMS | Details of event: {{ event.title }}{% endblock title %}
 
 {% block content %}
-    <!-- Row 1 -->
-    <div class="row g-3 justify-content-center">
-        <div class="col-12 d-flex">
-            <div class="card w-100">
-                <h5 class="card-header text-bg-light">
-                    {{ event.title }}
-                    {% if event.is_featured %}
-                        {% if event.featured_text %}
-                           <span class="badge bg-primary">{{ event.featured_text }}</span>
-                        {% else %}
-                            <span class="badge bg-primary">Featured</span>
-                        {% endif %}
+<!-- Row 1 -->
+<div class="row g-3 justify-content-center">
+    <div class="col-12 d-flex">
+        <div class="card w-100">
+            <h5 class="card-header text-bg-light">
+                {{ event.title }}
+                {% if event.is_featured %}
+                    {% if event.featured_text %}
+                        <span class="badge bg-primary">{{ event.featured_text }}</span>
+                    {% else %}
+                        <span class="badge bg-primary">Featured</span>
                     {% endif %}
-                </h5>
-                <div class="card-body">
-                    <p class="card-text"><span class="text-body-secondary">Description:</span> {{ event.description|linebreaksbr }}</p>
-                    <p class="card-text"><span class="text-body-secondary">Location:</span> {{ event.location }}</p>
-                    <p class="card-text"><span class="text-body-secondary">Date & Time:</span>
-                        From {{ event.start_datetime|date }} at {{ event.start_datetime|time }}
-                        {% if event.end_datetime %}
-                            to {{ event.end_datetime|date }} at {{ event.end_datetime|time }}
-                        {% endif %}
-                    </p>
-                    <p class="card-text"><span class="text-body-secondary">Price:</span>
-                        {% if not event.price %}
-                            Free
-                        {% else %}
-                            {{ event.get_currency_display }}{{ event.price }}
-                        {% endif %}
-                    </p>
-                    <p class="card-text"><span class="text-body-secondary">Capacity:</span>
-                        {% if not event.capacity %}
-                            Unlimited
-                        {% else %}
-                            {{ event.capacity }} / {{ event.capacity }}
-                        {% endif %}
-                    </p>
-                    <p class="card-text"><span class="text-body-secondary">Category:</span>
-                        <a href="#" class="badge text-bg-light border text-decoration-none">{{ event.category }}</a>
-                    </p>
-                    {% if event.tags.exists %}
-                        <p class="card-text"><span class="text-body-secondary">Tags:</span>
-                            {% for tag in event.tags.all %}
-                                <a href="#" class="badge text-bg-light border text-decoration-none rounded-pill">#{{ tag.name }}</a>
-                            {% endfor %}
-                        </p>
+                {% endif %}
+            </h5>
+            
+            <div class="card-body">
+                <p class="card-text"><span class="text-body-secondary">Description:</span> {{ event.description|linebreaksbr }}</p>
+                <p class="card-text"><span class="text-body-secondary">Location:</span> {{ event.location }}</p>
+                <p class="card-text"><span class="text-body-secondary">Date & Time:</span>
+                    From {{ event.start_datetime|date }} at {{ event.start_datetime|time }}
+                    {% if event.end_datetime %}
+                        to {{ event.end_datetime|date }} at {{ event.end_datetime|time }}
                     {% endif %}
-                </div>
-                <div class="card-footer">
+                </p>
+                <p class="card-text">
+                    <span class="text-body-secondary">Price:</span>
+                    {% if not event.price %}
+                        Free
+                    {% else %}
+                        {{ event.get_currency_display }}{{ event.price }}
+                    {% endif %}
+                </p>
+                <p class="card-text">
+                    <span class="text-body-secondary">Capacity:</span>
+                    {% if not event.capacity %}
+                        Unlimited
+                    {% else %}
+                        {{ event.capacity }} / {{ event.capacity }}
+                    {% endif %}
+                </p>
+                <p class="card-text">
+                    <span class="text-body-secondary">Category:</span>
+                    <a href="#" class="badge text-bg-light border text-decoration-none" title="Filter by category: {{ event.category }}">{{ event.category }}</a>
+                </p>
+                {% if event.tags.exists %}
+                    <p class="card-text">
+                        <span class="text-body-secondary">Tags:</span>
+                        {% for tag in event.tags.all %}
+                            <a href="#" class="badge text-bg-light border text-decoration-none rounded-pill" title="Filter by tag: {{ tag.name }}">#{{ tag.name }}</a>
+                        {% endfor %}
+                    </p>
+                {% endif %}
+                <p class="card-text">
+                    <span class="text-body-secondary ">Organizer:</span>
+                    <a href="#" class="text-decoration-none" title="Visit {{event.organizer}}'s profile">@{{ event.organizer.username }}</a>
+                </p>
+            </div>
+            
+            <div class="card-footer d-flex justify-content-between align-items-center">
+                <!-- Left side of the footer -->
+                <div class="d-flex flex-wrap align-items-center">
                     {% if event.price == 0 and event.capacity > 0 %}
-                        <button class="btn btn-primary my-1 me-1" title="Request reply">RSVP</button>
+                    <button class="btn btn-primary my-1 me-1" title="Request reply">RSVP</button>
                     {% else %}
                         <button class="btn btn-primary my-1 me-1">Buy Tickets</button>
                     {% endif %}
@@ -64,29 +76,42 @@
                     <button class="btn btn-dark my-1 me-1">Share</button>
                     <a href="https://www.google.com/maps/search/?api=1&query={{ event.location|urlencode }}" target="_blank" class="btn btn-dark my-1">Get Directions</a>
                 </div>
+                {% if request.user.is_authenticated and request.user == event.organizer %}
+                    <!-- Right side of the footer -->
+                    <div class="dropdown">
+                        <button class="btn btn-light dropdown-toggle border" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Options
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="{% url 'events:update_event' event.pk %}" class="dropdown-item text-decoration-none">Edit</a></li>
+                            <li><a href="{% url 'events:delete_event' event.pk %}" class="dropdown-item text-decoration-none text-danger">Delete</a></li>
+                        </ul>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
-    <!-- Row 2 -->
-    <div class="row justify-content-start mt-3">
-        <div class="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex">
-            {% if request.META.HTTP_REFERER %}
-                <a class="text-decoration-none" href="{{ request.META.HTTP_REFERER }}">↩ Back</a>
-            {% endif %}
-        </div>
+</div>
+<!-- Row 2 -->
+<div class="row justify-content-start mt-3">
+    <div class="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex">
+        {% if request.META.HTTP_REFERER %}
+            <a class="text-decoration-none" href="{{ request.META.HTTP_REFERER }}">↩ Back</a>
+        {% endif %}
     </div>
-    <!-- TODO: Add more sections with bigger text:
-        -banner
-        -date & time
-        -title
-        -description
-        -organizer name, button to follow
-        -date and time
-        -location
-        -about
-        -tags
-        -button to report
-        -more events from this organizer
-        -other events
-     -->
+</div>
+<!-- TODO: Add more sections with bigger text:
+    -banner
+    -date & time
+    -title
+    -description
+    -organizer name, button to follow
+    -date and time
+    -location
+    -about
+    -tags
+    -button to report
+    -more events from this organizer
+    -other events
+-->
 {% endblock content %}
