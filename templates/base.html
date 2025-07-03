@@ -9,11 +9,10 @@
     <!-- Custom css go here: -->
 </head>
 <body>
-    <header class="text-bg-dark container-fluid">
-        <nav class="navbar navbar-expand-lg" data-bs-theme="dark">
-            <a class="navbar-brand" href="{% url 'events:index' %}">
+    <header class="text-bg-dark">
+        <nav class="navbar navbar-expand-lg container-fluid" data-bs-theme="dark">
+            <a class="navbar-brand h1 mb-0" href="{% url 'events:index' %}" aria-label="Event Management System Home page">EMS
                 <!-- <img class="d-inline-block align-text-top" src="" alt="Logo" width="64" height="64"> -->
-                 <h1>EMS</h1>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -26,14 +25,17 @@
                     <li class="nav-item"><a class="nav-link {% if request.path == '/accounts/' %}active{% endif %}" href="{% url 'accounts:index' %}">Accounts</a></li>
 
                     {% if user.is_authenticated and user.is_staff %}
-                        <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}" target="_blank">Admin Dashboard &UpperRightArrow;</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}" target="_blank">Admin Dashboard ↗</a></li>
                     {% endif %}
                 </ul>
-                {% if user.is_authenticated %}
-                    <span class="ms-auto">Welcome, {{user.username}}!</span><a href="#" class="ms-1 text-decoration-none">Log out</a>
-                {% else %}
-                    <a href="#" class="ms-auto text-decoration-none">Log in</a>
-                {% endif %}
+                <div class="ms-auto d-flex align-items-center">
+                    {% if user.is_authenticated %}
+                        <span class="me-1">Welcome, {{user.username}}!</span>
+                        <a href="#" class="text-decoration-none">Log out</a>
+                    {% else %}
+                        <a href="#" class="text-decoration-none">Log in</a>
+                    {% endif %}
+                </div>
                 <!--form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
                     <button class="btn btn-outline-primary" type="submit">Search</button>
@@ -45,7 +47,7 @@
         {% block content %}{% endblock content %}
     </main>
     <footer class="container-fluid text-bg-light py-3">
-        <p class="mb-0">&copy; {% now "Y" %} Event Management System. All Rights Reserved.</p>
+        <p class="mb-0">© {% now "Y" %} Event Management System. All Rights Reserved.</p>
     </footer>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}" defer></script>
     <!-- Custom scripts go here: -->
