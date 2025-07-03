@@ -43,7 +43,7 @@
                     <p class="card-text"><span class="text-body-secondary">Category:</span>
                         <a href="#" class="badge text-bg-light border text-decoration-none">{{ event.category }}</a>
                     </p>
-                    {% if event.tags.all %}
+                    {% if event.tags.exists %}
                         <p class="card-text"><span class="text-body-secondary">Tags:</span>
                             {% for tag in event.tags.all %}
                                 <a href="#" class="badge text-bg-light border text-decoration-none rounded-pill">#{{ tag.name }}</a>
@@ -53,15 +53,15 @@
                 </div>
                 <div class="card-footer">
                     {% if event.price == 0 and event.capacity > 0 %}
-                        <button class="btn btn-primary my-1" title="Request reply">RSVP</button>
+                        <button class="btn btn-primary my-1 me-1" title="Request reply">RSVP</button>
                     {% else %}
-                        <button class="btn btn-primary my-1">Buy Tickets</button>
+                        <button class="btn btn-primary my-1 me-1">Buy Tickets</button>
                     {% endif %}
-                    <button class="btn btn-dark my-1">Favorite</button>
+                    <button class="btn btn-dark my-1 me-1">Favorite</button>
                     {# This would typically open a modal or trigger a download of an .ics file #}
-                    <button class="btn btn-dark my-1">Add to Calendar</button>
+                    <button class="btn btn-dark my-1 me-1">Add to Calendar</button>
                     {# This would usually open a modal with sharing options #}
-                    <button class="btn btn-dark my-1">Share</button>
+                    <button class="btn btn-dark my-1 me-1">Share</button>
                     <a href="https://www.google.com/maps/search/?api=1&query={{ event.location|urlencode }}" target="_blank" class="btn btn-dark my-1">Get Directions</a>
                 </div>
             </div>
@@ -71,8 +71,7 @@
     <div class="row justify-content-start mt-3">
         <div class="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex">
             {% if request.META.HTTP_REFERER %}
-                <a class="text-decoration-none" href="{{ request.META.HTTP_REFERER }}
-                ">&larrhk; Back</a>
+                <a class="text-decoration-none" href="{{ request.META.HTTP_REFERER }}">↩ Back</a>
             {% endif %}
         </div>
     </div>
