@@ -1,6 +1,8 @@
 {% extends  "base.html" %}
 
-{% block title %}EMS | Create a new event (POST) | Edit an event (GET){% endblock title %}
+{% block title %}
+    EMS | {% if form.instance.pk %}Update event: {{ event.title }}{% else %}Create new event{% endif %}
+{% endblock title %}
 
 {% block content %}
 <div class="container">
@@ -9,7 +11,7 @@
             <div class="card">
                 <div class="card-header text-bg-primary">
                     <h2 class="m-0">
-                        {% if form.instance.pk %}Edit event{% else %}Create new event{% endif %}
+                        {% if form.instance.pk %}Update event{% else %}Create new event{% endif %}
                     </h2>
                 </div>
                 <div class="card-body">
