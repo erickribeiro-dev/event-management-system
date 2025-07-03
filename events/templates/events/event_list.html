@@ -3,105 +3,114 @@
 {% block title %}EMS | List of events{% endblock title %}
 
 {% block content %}
-    <!-- Row 1 -->
-    <div class="row justify-content-start mb-3">
-        <div class="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex">
-            <a href="{% url 'events:create_event' %}" class="btn btn-primary" role="button">Create a new event</a>
-        </div>
+<!-- Row 1 -->
+<div class="row justify-content-start mb-3">
+    <div class="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex">
+        <a href="{% url 'events:create_event' %}" class="btn btn-primary" role="button">Create a new event</a>
     </div>
-    <!-- Row 2 -->
-    <div class="row g-3 justify-content-start">
-        {% for event in events %}
-            <div class="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex">
-                <div class="card w-100">
-                    <h5 class="card-header text-bg-light">
-                        <a href="{% url 'events:event_detail' event.slug %}" class="text-decoration-none">{{ event.title }}</a>
-                        {% if event.is_featured %}
+</div>
+<!-- Row 2 -->
+<div class="row g-3 justify-content-start">
+    {% for event in events %}
+        <div class="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex">
+            <div class="card w-100">
+                <h5 class="card-header text-bg-light">
+                    <a href="{% url 'events:event_detail' event.slug %}" class="text-decoration-none">{{ event.title }}</a>
+                    {% if event.is_featured %}
                         {% if event.featured_text %}
                             <span class="badge bg-primary">{{ event.featured_text }}</span>
                         {% else %}
                             <span class="badge bg-primary">Featured</span>
                         {% endif %}
                     {% endif %}
-                    </h5>
-                    <div class="card-body">
-                        <p class="card-text">
-                            <span class="text-body-secondary">Description:</span>
-                            {{ event.description|truncatewords:30 }} <a href="{% url 'events:event_detail' event.slug %}">Read more</a>
-                        </p>
-                        <p class="card-text">
-                            <span class="text-body-secondary">Location:</span>
-                            {{ event.location }}
-                        </p>
-                        <p class="card-text">
-                            <span class="text-body-secondary">Date & Time:</span>
-                            {{ event.start_datetime|date }}, {{ event.start_datetime|time }}
-                            {% if event.end_datetime %}
-                                to {{ event.end_datetime|date }}, {{ event.end_datetime|time }}
-                            {% endif %}
-                        </p>
-                        <p class="card-text">
-                            <span class="text-body-secondary">Price:</span>
-                            {% if not event.price %}
-                                Free
-                            {% else %}
-                                {{ event.get_currency_display }}{{ event.price }}
-                            {% endif %}
-                        </p>
-                        <p class="card-text">
-                            <span class="text-body-secondary">Capacity:</span>
-                            {% if not event.capacity %}
-                                Unlimited
-                            {% else %}
-                                {{ event.capacity }} / {{ event.capacity }}
-                            {% endif %}
-                        </p>
-                        <p class="card-text">
-                            <span class="text-body-secondary">Category:</span>
-                            <a href="#" class="badge text-bg-light border text-decoration-none" title="Filter by category: {{event.category}}">{{ event.category }}</a>
-                            <!-- TODO: add slug to tags and categories
-                            <a href="{ url 'events:event_list' }?category={{ event.category.slug|default:'' }}" class="btn btn-sm btn-primary">
-                                {{ event.category.name|default:'Uncategorized' }}
-                            </a> -->
-                        </p>
-                        <p class="card-text">
-                            <span class="text-body-secondary">Tags:</span>
-                            {% if event.tags.exists %}
-                                {% for tag in event.tags.all %}
-                                    <a href="#" class="badge text-bg-light border text-decoration-none rounded-pill" title="Filter by tag: {{tag.name}}">#{{ tag.name }}</a>
-                                    <!-- TODO: add slug to tags and categories
-                                    <a href="{ url 'events:event_list' }?tag={{ tag.slug|default:'' }}" class="badge text-bg-info rounded-pill text-decoration-none me-1">
-                                        #{{ tag.name }}
-                                    </a> -->
-                                {% endfor %}
-                            {% else %}
-                                <span>None</span>
-                            {% endif %}
-                        </p>
+                </h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        <span class="text-body-secondary">Description:</span>
+                        {{ event.description|truncatewords:30 }}
+                    </p>
+                    <p class="card-text">
+                        <span class="text-body-secondary">Location:</span>
+                        {{ event.location }}
+                    </p>
+                    <p class="card-text">
+                        <span class="text-body-secondary">Date & Time:</span>
+                        {{ event.start_datetime|date }}, {{ event.start_datetime|time }}
+                        {% if event.end_datetime %}
+                            to {{ event.end_datetime|date }}, {{ event.end_datetime|time }}
+                        {% endif %}
+                    </p>
+                    <p class="card-text">
+                        <span class="text-body-secondary">Price:</span>
+                        {% if not event.price %}
+                            Free
+                        {% else %}
+                            {{ event.get_currency_display }}{{ event.price }}
+                        {% endif %}
+                    </p>
+                    <p class="card-text">
+                        <span class="text-body-secondary">Capacity:</span>
+                        {% if not event.capacity %}
+                            Unlimited
+                        {% else %}
+                            {{ event.capacity }} / {{ event.capacity }}
+                        {% endif %}
+                    </p>
+                    <p class="card-text">
+                        <span class="text-body-secondary">Category:</span>
+                        <a href="#" class="badge text-bg-light border text-decoration-none" title="Filter by category: {{ event.category }}">{{ event.category }}</a>
+                        <!-- TODO: add slug to tags and categories
+                        <a href="{ url 'events:event_list' }?category={{ event.category.slug|default:'' }}" class="btn btn-sm btn-primary">
+                            {{ event.category.name|default:'Uncategorized' }}
+                        </a> -->
+                    </p>
+                    <p class="card-text">
+                        <span class="text-body-secondary">Tags:</span>
+                        {% if event.tags.exists %}
+                            {% for tag in event.tags.all %}
+                                <a href="#" class="badge text-bg-light border text-decoration-none rounded-pill" title="Filter by tag: {{ tag.name }}">#{{ tag.name }}</a>
+                                <!-- TODO: add slug to tags and categories
+                                <a href="{ url 'events:event_list' }?tag={{ tag.slug|default:'' }}" class="badge text-bg-info rounded-pill text-decoration-none me-1">
+                                    #{{ tag.name }}
+                                </a> -->
+                            {% endfor %}
+                        {% else %}
+                            <span>None</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <!-- Left side of the footer -->
+                    <div class="d-flex align-items-center">
+                        <span class="text-body-secondary me-1">Organizer:</span>
+                        <a href="#" class="text-decoration-none me-auto" aria-label="Visit {{event.organizer}}'s profile">@{{ event.organizer.username }}</a>
+                        <!-- TODO: Add link to organizer profile
+                            <a href="{url 'accounts:index' organizer.slug OR organizer.pk }">@{{ event.organizer }}</a>
+                            -->
                     </div>
-                    <div class="card-footer">
-                        <p class="card-text d-flex">
-                            <span class="text-body-secondary me-1">Organizer:</span>
-                            <a href="#" class="text-decoration-none me-auto" aria-label="Visit {{event.organizer}}'s profile">@{{ event.organizer.username }}</a>
-                            <!-- TODO: Add link to organizer profile
-                             <a href="{url 'accounts:index' organizer.slug OR organizer.pk }">@{{ event.organizer }}</a>
-                             -->
-                            {% if request.user.is_authenticated and request.user == event.organizer %}
-                                <a href="{% url 'events:update_event' event.pk %}" class="me-1 text-decoration-none">Edit</a>
-                                <a href="#" class="text-decoration-none text-danger">Delete</a>
-                            {% endif %}
-                        </p>
-                    </div>
+                    {% if request.user.is_authenticated and request.user == event.organizer %}
+                        <!-- Right side of the footer -->
+                        <div class="dropdown">
+                            <button class="btn btn-light btn-sm dropdown-toggle  border" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Options
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'events:update_event' event.pk %}" class="dropdown-item text-decoration-none">Edit</a></li>
+                                <li><a href="{% url 'events:delete_event' event.pk %}" class="dropdown-item text-decoration-none text-danger">Delete</a></li>
+                            </ul>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
-        {% empty %}
-            <p class="m-0">No events have been created yet.</p>
-        {% endfor %}
-    </div>
-    <!-- Row 3 -->
-    <div class="row justify-content-start mt-3">
-        <div class="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex">
-            <a href="{% url 'events:create_event' %}" class="btn btn-primary" role="button">Create a new event</a>
         </div>
+    {% empty %}
+        <p class="m-0">No events have been created yet.</p>
+    {% endfor %}
+</div>
+<!-- Row 3 -->
+<div class="row justify-content-start mt-3">
+    <div class="col-12 col-md-6 col-lg-4 col-xxl-3 d-flex">
+        <a href="{% url 'events:create_event' %}" class="btn btn-primary" role="button">Create a new event</a>
     </div>
+</div>
 {% endblock content %}
